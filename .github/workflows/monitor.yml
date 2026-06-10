@@ -31,11 +31,3 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         run: |
           python main.py
-      
-      - name: Commit jobs_queue.json
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "AutoNiq Action"
-          git add jobs_queue.json
-          git commit -m "Update jobs_queue.json" || true
-          git push

@@ -1,0 +1,41 @@
+name: AutoNiq Monitor
+
+on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run AutoNiq
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          NOTIFICATION_TYPE: ${{ secrets.NOTIFICATION_TYPE }}
+          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: |
+          python main.py
+      
+      - name: Commit jobs.json
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "AutoNiq Action"
+          git add jobs.json
+          git commit -m "Update jobs.json" || true
+          git push

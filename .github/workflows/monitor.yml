@@ -25,17 +25,17 @@ jobs:
       
       - name: Run AutoNiq
         env:
-          API_KEY: ${{ secrets.API_KEY }}
           NOTIFICATION_TYPE: ${{ secrets.NOTIFICATION_TYPE }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
           EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         run: |
           python main.py
       
-      - name: Commit jobs.json
+      - name: Commit jobs_queue.json
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "AutoNiq Action"
-          git add jobs.json
-          git commit -m "Update jobs.json" || true
+          git add jobs_queue.json
+          git commit -m "Update jobs_queue.json" || true
           git push

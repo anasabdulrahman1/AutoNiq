@@ -48,7 +48,6 @@ def main():
         new_jobs = fetch_jobs()
 
         print()
-        total = len(new_jobs) + len([j for j in pending_jobs if load_pending_jobs().get(j['url'], {}).get('status') == 'sent'])
         print(f"Found {len(new_jobs)} new jobs")
         print()
 

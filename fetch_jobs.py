@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://careers.smartrecruiters.com/NielsenIQ/api/groups?page="
-SEEN_JOBS_FILE = "jobs_seen.json"
 
 KEYWORDS = [
 "data operations",
@@ -31,29 +30,6 @@ INDIA_LOCATIONS = [
 "kochi",
 "kolkata",
 ]
-
-def load_seen_jobs():
-    """Load previously seen job URLs"""
-    try:
-        if os.path.exists(SEEN_JOBS_FILE):
-            with open(SEEN_JOBS_FILE, 'r') as f:
-                seen = set(json.load(f))
-                logger.info(f"Loaded {len(seen)} previously seen jobs")
-                return seen
-    except Exception as e:
-        logger.warning(f"Could not load seen jobs file: {str(e)}")
-    return set()
-
-
-def save_seen_jobs(seen):
-    """Save seen job URLs"""
-    try:
-        with open(SEEN_JOBS_FILE, 'w') as f:
-            json.dump(list(seen), f)
-        logger.info(f"Saved {len(seen)} seen jobs")
-    except Exception as e:
-        logger.error(f"Failed to save seen jobs: {str(e)}")
-
 
 def verify_job_exists(job_url: str) -> bool:
     """Verify if a job URL still exists on the page"""

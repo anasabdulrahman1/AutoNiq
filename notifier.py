@@ -49,9 +49,16 @@ def send_email_notification(job: Dict, config: Dict) -> bool:
         smtp_port = config.get("smtp_port")
         smtp_password = config.get("smtp_password")
 
-        if not all([recipient, sender, smtp_password]):
+        if not all([recipient, sender, smtp_server, smtp_port, smtp_password]):
             logger.warning("Email config incomplete - skipping notification")
             return False
+
+        # Type assertions after validation
+        assert recipient is not None
+        assert sender is not None
+        assert smtp_server is not None
+        assert smtp_port is not None
+        assert smtp_password is not None
 
         # Create email
         msg = MIMEMultipart()
